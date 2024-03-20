@@ -70,7 +70,35 @@ class Data:
         return self._numberOfClasses
 
 class Schedule:
-    ''' '''
+    def __init__(self):
+        self._data = data
+        self._classes = []
+        self._numberOfConflicts = 0
+        self._fitness = -1
+        self._classNumb = 0
+        self._isFitnessChanged = True
+
+    def get_numbOfConflicts(self):
+        self._numberOfConflicts
+    
+    def get_fitness(self):
+        if(self._isFitnessChanged == True):
+            self._fitness = self.calculate_fitness()
+            self._isFitnessChanged = False
+        return self._fitness
+
+    def initialize(self):
+        depts = self._data.get_depts()
+        for i in range(0, len(depts)):
+            courses = depts[i].get_courses()
+            for j in range(0, len(courses)):
+                newClass = Class(self._classNumb, depts[i], courses[j])
+                self._classNumb += 1
+                newClass.set_meetingTime(data.get_meetingTimes()[rnd.randrange(0, len(data.get_meetingTimes()))])
+                newClass.set_room(data.get_rooms()[rnd.randrange(0, len(data.get_rooms()))])
+                newClass.set_instructor(courses[j].get_instructors()[rnd.randrange(0, len(courses[j].get_instructors))])
+                self._classes.append(newClass)
+            return self
 
 class Population:
     ''' '''
@@ -162,3 +190,5 @@ class Class:
     def __str__(self):
         return str(self._dept.get_name()) + "," + str(self._course.get_number()) + "," + \
                str(self._room.get_number()) + "," + str(self._instructor.get_id()) + "," + str(self._meetingTime.get_id())
+    
+data = Data()
