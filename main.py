@@ -1,0 +1,20 @@
+class Data:
+    ''' '''
+class Schedule:
+    ''' '''
+class Population:
+    ''' '''
+class GeneticAlgorithm:
+    ''' '''
+class Course:
+    ''' '''
+class Instructor:
+    ''' '''
+class Room:
+    ''' '''
+class MeetingTime:
+    ''' '''
+class Department:
+    ''' '''
+class Class:
+    ''' '''
