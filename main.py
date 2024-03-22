@@ -99,25 +99,39 @@ class Schedule:
                 newClass.set_instructor(courses[j].get_instructors()[rnd.randrange(0, len(courses[j].get_instructors))])
                 self._classes.append(newClass)
         return self
-        def calculate_fitness(self):
-            self._numberOfConflicts = 0
-            classes = self.get_classes()
-            for i in range (0, len(classes)):
-                if(classes[i].get_room().get_seatingCapacity() < classes[i].get_course().get_maxNumberOfStudents()):
-                    self._numberOfConflicts += 1
-                for j in range(0, len(classes)):
-                    if(j >= i):
-                        if (classes[i].get_meetingTime() == classes[j].get_meetingTime() and 
-                            classes[i].get_id() != classes[j].get_id()):
-                            if (classes[i].get_room() == classes[j].get_room()):
-                                self._numberOfConflicts += 1
-                            if (classes[i].get_instructor() == classes[j].get_instructor()):
-                                self._numberOfConflicts += 1
-            return 1 / ((1.0*self._numberOfConflicts + 1))
+    def calculate_fitness(self):
+        self._numberOfConflicts = 0
+        classes = self.get_classes()
+        for i in range (0, len(classes)):
+            if(classes[i].get_room().get_seatingCapacity() < classes[i].get_course().get_maxNumberOfStudents()):
+                self._numberOfConflicts += 1
+            for j in range(0, len(classes)):
+                if(j >= i):
+                    if (classes[i].get_meetingTime() == classes[j].get_meetingTime() and 
+                        classes[i].get_id() != classes[j].get_id()):
+                        if (classes[i].get_room() == classes[j].get_room()):
+                            self._numberOfConflicts += 1
+                        if (classes[i].get_instructor() == classes[j].get_instructor()):
+                            self._numberOfConflicts += 1
+        return 1 / ((1.0*self._numberOfConflicts + 1))
+    def __str__(self):
+        returnValue = ""
+        for i in range(0, len(self._classes)-1):
+            returnValue += str(self._classes[i]) + ", "
+        returnValue += str(self._classes[len(self._classes)-1])
+        return returnValue
 
 
 class Population:
-    ''' '''
+    def __init__(self, size):
+        self._size = size
+        self._data = data
+        self._schedules = []
+        for i in range(0, size):
+            self._schedules.append(Schedule().initialize())
+    
+    def get_schedules(self):
+        return self._schedules
 
 class GeneticAlgorithm:
     ''' '''
@@ -206,5 +220,48 @@ class Class:
     def __str__(self):
         return str(self._dept.get_name()) + "," + str(self._course.get_number()) + "," + \
                str(self._room.get_number()) + "," + str(self._instructor.get_id()) + "," + str(self._meetingTime.get_id())
+    
+class DisplayMgr:
+    def print_available_data(self):
+        print("> All Availiable data")
+        self.print_dept()
+        self.print_course()
+        self.print_room()
+        self.print_instructor()
+        self.print_meeting_times()
+    
+    def print_dept(self):
+        depts = data.get_depts()
+        availableDeptsTable = prettytable.PrettyTable(['dept', 'courses'])
+        for i in range(0, len(depts)):
+            courses = depts._getitem_(i).get_courses()
+            tempStr = "["
+            for j in range(0, len(courses) - 1):
+                tempStr += courses[j].__str__() + ", "
+            tempStr += courses[len(courses) - 1].__str__ + "]"
+            availableDeptsTable.add.row([depts.__getitem__(i).get_name(), tempStr])
+        print(availableDeptsTable) 
+
+    def print_course(self):
+        availableCoursesTable = prettytable.PrettyTable(['id', 'course #', 'max # of students', 'instructor'])
+        courses = data.get_courses() 
+        for i in range(0, len(courses)):
+            instructors = courses[i].get_instructors()
+            tempStr = ""
+            for j in range(0, len(instructors) - 1):
+                tempStr += instructors[j].__str__() + ", "
+            tempStr += instructors[len(instructors) - 1].__str__()
+            availableCoursesTable.add.row(
+                [courses[i].get_number(), courses[i].get_name(), str(courses[i].get_maxNumberOfStudents()), tempStr]
+            )
+            print(availableCoursesTable)
+    
+    def print_instructor(self):
+        availableInstructorsTable = prettytable.PrettyTable(['id', 'instructor'])
+        instructors = data.get_instructors()
+        for i in range(0, len(instructors)):
+            availableInstructorsTable.add.row([instructors[i].get_id(), instructors[i].get_name()])
+        print(availableInstructorsTable)
+
     
 data = Data()
