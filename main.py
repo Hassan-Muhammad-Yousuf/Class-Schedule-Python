@@ -98,7 +98,23 @@ class Schedule:
                 newClass.set_room(data.get_rooms()[rnd.randrange(0, len(data.get_rooms()))])
                 newClass.set_instructor(courses[j].get_instructors()[rnd.randrange(0, len(courses[j].get_instructors))])
                 self._classes.append(newClass)
-            return self
+        return self
+        def calculate_fitness(self):
+            self._numberOfConflicts = 0
+            classes = self.get_classes()
+            for i in range (0, len(classes)):
+                if(classes[i].get_room().get_seatingCapacity() < classes[i].get_course().get_maxNumberOfStudents()):
+                    self._numberOfConflicts += 1
+                for j in range(0, len(classes)):
+                    if(j >= i):
+                        if (classes[i].get_meetingTime() == classes[j].get_meetingTime() and 
+                            classes[i].get_id() != classes[j].get_id()):
+                            if (classes[i].get_room() == classes[j].get_room()):
+                                self._numberOfConflicts += 1
+                            if (classes[i].get_instructor() == classes[j].get_instructor()):
+                                self._numberOfConflicts += 1
+            return 1 / ((1.0*self._numberOfConflicts + 1))
+
 
 class Population:
     ''' '''
