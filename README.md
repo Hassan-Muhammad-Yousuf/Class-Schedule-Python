@@ -1,4 +1,4 @@
-Introduction to Class Scheduling Genetic Algorithm
+Introduction to Class Scheduling prototype model with Genetic Algorithm in python
 The code implements a genetic algorithm to solve the class scheduling problem, 
 a common optimization challenge in educational institutions. Class scheduling involves assigning courses to specific timeslots,
 instructors, and rooms while adhering to various constraints such as room capacity, 
