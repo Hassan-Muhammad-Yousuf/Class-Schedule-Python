@@ -239,7 +239,7 @@ class DisplayMgr:
             for j in range(0, len(courses) - 1):
                 tempStr += courses[j].__str__() + ", "
             tempStr += courses[len(courses) - 1].__str__ + "]"
-            availableDeptsTable.add.row([depts.__getitem__(i).get_name(), tempStr])
+            availableDeptsTable.add_row([depts.__getitem__(i).get_name(), tempStr])
         print(availableDeptsTable) 
 
     def print_course(self):
@@ -251,7 +251,7 @@ class DisplayMgr:
             for j in range(0, len(instructors) - 1):
                 tempStr += instructors[j].__str__() + ", "
             tempStr += instructors[len(instructors) - 1].__str__()
-            availableCoursesTable.add.row(
+            availableCoursesTable.add_row(
                 [courses[i].get_number(), courses[i].get_name(), str(courses[i].get_maxNumberOfStudents()), tempStr]
             )
             print(availableCoursesTable)
@@ -260,8 +260,22 @@ class DisplayMgr:
         availableInstructorsTable = prettytable.PrettyTable(['id', 'instructor'])
         instructors = data.get_instructors()
         for i in range(0, len(instructors)):
-            availableInstructorsTable.add.row([instructors[i].get_id(), instructors[i].get_name()])
+            availableInstructorsTable.add_row([instructors[i].get_id(), instructors[i].get_name()])
         print(availableInstructorsTable)
+
+    def print_room():
+        availiableRoomsTable = prettytable.PrettyTable(['room #', 'max seating capacity'])
+        rooms = data.get_rooms()
+        for i in range(0, len(rooms)):
+            availiableRoomsTable.add_row([str(rooms[i].get_number()), str(rooms[i].get_seatingCapacity())])
+        print(availiableRoomsTable)
+
+    def print_meeting_times(self):
+        availableMeetingTimeTable = prettyTable.PrettyTable(['id', 'Meeting Time'])
+        meetingTimes = data.get_meetingTimes()
+        for i in range(0, len(meetingTimes)):
+            availableMeetingTimeTable.add_row([meetingTimes[i].get_id(), meetingTimes[i].get_times()])
+        print(availableMeetingTimeTable)
 
     
 data = Data()
